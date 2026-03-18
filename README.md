@@ -4,9 +4,13 @@ Local workflow orchestrator for MCP servers. Define multi-step workflows as TOML
 
 ![MCP Compose Studio](docs/studio.png)
 
-## Why
+## The Problem
 
-You have multiple MCP servers (tech-radar, specforge, knowledge-base, etc.) each with their own tools. MCP Compose lets you chain them together into reusable workflows — like shell pipes but for MCP tools.
+The MCP ecosystem is exploding — 80K+ stars on curated server lists, every major AI provider adding support, Anthropic donating the protocol to an open foundation. Power users now run 5-10 MCP servers simultaneously (knowledge bases, APIs, search tools, workspace integrations).
+
+But there's no composition layer. Every multi-step workflow is manual: call tool A, copy the output, paste it into tool B, wait, feed that into tool C. The same sequences get repeated session after session with no way to save, share, or automate them.
+
+**MCP Compose solves this.** Define your workflow once as a TOML file, and the engine handles execution order, parallelism, and data flow between steps. Like `docker-compose` for MCP servers — declare what you want, not how to run it.
 
 ```
 tech-radar.get_latest_briefing ──┐
