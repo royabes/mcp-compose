@@ -1,0 +1,22 @@
+name = "morning"
+description = "Daily briefing: tech news, email, calendar, then daily plan"
+
+[steps.briefing]
+tool = "tech-radar.get_latest_briefing"
+
+[steps.emails]
+tool = "google-workspace.gmail_search"
+args.query = "is:unread category:primary"
+args.max_results = 10
+
+[steps.calendar]
+tool = "google-workspace.calendar_list_events"
+args.time_min = "{{today}}"
+args.time_max = "{{tomorrow}}"
+
+[steps.plan]
+tool = "daily-routine.plan"
+depends_on = ["briefing", "emails", "calendar"]
+args.briefing = "{{steps.briefing.output}}"
+args.emails = "{{steps.emails.output}}"
+args.calendar = "{{steps.calendar.output}}"
