@@ -152,3 +152,12 @@ tool = "server.tool_name"
 '''
     target.write_text(template)
     typer.echo(f"Created: {target}")
+
+
+@app.command()
+def studio(
+    port: Annotated[int, typer.Option(help="Port to serve on")] = 37790,
+) -> None:
+    """Launch the visual workflow builder."""
+    from mcp_compose.studio import serve
+    serve(port=port)

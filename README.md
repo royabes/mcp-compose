@@ -2,6 +2,8 @@
 
 Local workflow orchestrator for MCP servers. Define multi-step workflows as TOML files, compose tools from different MCP servers into DAGs with parallel execution and data flow between steps.
 
+![MCP Compose Studio](docs/studio.png)
+
 ## Why
 
 You have multiple MCP servers (tech-radar, specforge, knowledge-base, etc.) each with their own tools. MCP Compose lets you chain them together into reusable workflows — like shell pipes but for MCP tools.
@@ -149,6 +151,7 @@ The `overrides` parameter in `run_workflow` replaces template variables before e
 | `mc run <name>` | Show execution plan |
 | `mc new <name>` | Scaffold a new workflow file |
 | `mc new <name> --project` | Create in project-local directory |
+| `mc studio` | Launch visual workflow builder (port 37790) |
 
 ## MCP Server
 
@@ -228,6 +231,24 @@ Weekly review of the idea pipeline — status, ranked list, latest trends, knowl
 4. **Use overrides for reusability** — `{{topic}}`, `{{query}}` make workflows parameterized
 5. **Validate before running** — `mc validate <name>` catches issues early
 
+## Studio — Visual Workflow Builder
+
+MCP Compose includes a built-in visual workflow builder. Launch it with:
+
+```bash
+mc studio
+```
+
+Opens at `http://127.0.0.1:37790` with:
+
+- **DAG Visualization** — workflows rendered as interactive node graphs with SVG edges and wave labels
+- **TOML Editor** — syntax-highlighted editor with live validation (auto-validates on keystroke)
+- **Simulation Mode** — step-by-step wave animation showing execution flow
+- **MCP Server Discovery** — auto-detects available servers from your Claude config
+- **CRUD** — create, edit, validate, save, and delete workflows from the browser
+
+Click any node to inspect its tool, arguments, wave, and dependencies. Ctrl+S to save.
+
 ## Architecture
 
 ```
@@ -238,6 +259,7 @@ src/mcp_compose/
   config.py      Workflow discovery (global + project)
   cli.py         Typer CLI (mc command)
   mcp_server.py  FastMCP server (4 tools)
+  studio.py      Visual workflow builder (FastAPI + embedded UI)
 ```
 
 ## Development
